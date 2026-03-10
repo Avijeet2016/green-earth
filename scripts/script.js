@@ -1,6 +1,6 @@
 const categoriesContainer = document.getElementById('categories-container');
 const treesContainer = document.getElementById('trees-container');
-
+const spinner = document.getElementById('spinner');
 
 const loadCategories = async () => {
     const url = "https://openapi.programming-hero.com/api/categories";
@@ -13,20 +13,51 @@ const displayCategories = (categories) => {
     categories.forEach(item => {
         const btn = document.createElement('button');
         btn.className = 'btn btn-outline w-full';
+        btn.onclick = () => selectCategory(item.id, btn);
         btn.textContent = item.category_name;
         categoriesContainer.appendChild(btn);
     })
 }
 
+const selectCategory = async (cat, btn) => {
+    showSpinner();
+    const allBtn = document.querySelectorAll('#categories-container button, #all-trees-btn');
+    
+    allBtn.forEach(item => {
+        item.classList.remove('btn-primary');
+        item.classList.add('btn-outline');
+    })
+    btn.classList.remove('btn-outline');
+    btn.classList.add('btn-primary');
+
+    const url = `https://openapi.programming-hero.com/api/category/${cat}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    hideSpinner();
+    displayTrees(data.plants);
+}
+
+showSpinner = () => {
+    spinner.classList.remove('hidden');
+    // treesContainer.classList.add('hidden');
+}
+
+hideSpinner = () => {
+    spinner.classList.add('hidden');
+    // treesContainer.classList.remove('hidden');
+}
+
 const loadTrees = async () => {
+    showSpinner();
     const url = "https://openapi.programming-hero.com/api/plants";
     const res = await fetch(url);
     const data = await res.json();
     displayTrees(data.plants);
+    hideSpinner();
 }
 
 const displayTrees = (trees) => {
-    console.log(trees);
+    treesContainer.innerHTML = "";
     trees.forEach(item => {
         const card = document.createElement('div');
         card.className = "card bg-base-100 shadow-sm";
@@ -46,7 +77,6 @@ const displayTrees = (trees) => {
         `;
         treesContainer.appendChild(card);
     })
-    
 }
 
 loadCategories();
