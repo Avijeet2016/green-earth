@@ -4,6 +4,7 @@ const spinner = document.getElementById('spinner');
 const allTreesBtn = document.getElementById('all-trees-btn');
 const cartContainer = document.getElementById("cart-container");
 const totalPrice = document.getElementById("total-price");
+const emptyCartMessage = document.getElementById("empty-cart-message");
 let cart = [];
 
 const loadCategories = async () => {
@@ -109,6 +110,13 @@ const addToCart = (id, name, price) => {
 
 const updateCart = () => {
     cartContainer.innerHTML = "";
+    if (cart.length === 0) {
+        emptyCartMessage.classList.remove('hidden');
+        totalPrice.innerText = "0";
+        return;
+    }
+    emptyCartMessage.classList.add('hidden');
+
     let total = 0;
     cart.forEach(item => {
         total += (item.price * item.quantity);
