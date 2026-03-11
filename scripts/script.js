@@ -88,7 +88,7 @@ const displayTrees = (trees) => {
                 <p class="line-clamp-2">${item.description}</p>
                 <div class="badge badge-outline badge-success">${item.category}</div>
                 <div class="card-actions flex justify-between items-center">
-                    <h2 class="font-bold text-2xl text-green-500">$${item.price}</h2>
+                    <h2 class="font-bold text-2xl ${item.price>500? "text-red-500":"text-green-500"}">$${item.price}</h2>
                     <button onclick="addToCart(${item.id}, '${item.name}', ${item.price})" class="btn bg-[#00C950] text-white font-bold btn-sm">Cart</button>
                 </div>
             </div>
