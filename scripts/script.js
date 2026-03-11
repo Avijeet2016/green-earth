@@ -80,17 +80,41 @@ const displayTrees = (trees) => {
                 <img src="${item.image}" alt="${item.name}" class="h-40 w-full" />
             </figure>
             <div class="card-body">
-                <h2 class="card-title">${item.name}</h2>
+                <h2 onclick="displayTreeDetails(${item.id})" class="card-title">${item.name}</h2>
                 <p class="line-clamp-2">${item.description}</p>
                 <div class="badge badge-outline badge-success">${item.category}</div>
                 <div class="card-actions flex justify-between items-center">
                     <h2 class="font-bold text-2xl text-green-500">$${item.price}</h2>
-                    <button class="btn btn-primary btn-sm">Buy Now</button>
+                    <button class="btn bg-[#00C950] text-white font-bold btn-sm">Cart</button>
                 </div>
             </div>
         `;
         treesContainer.appendChild(card);
     })
+}
+
+const displayTreeDetails = async (id) => {
+    const url = `https://openapi.programming-hero.com/api/plant/${id}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const tree = data.plants;
+    console.log(tree);
+
+    const treeDetails = document.getElementById("tree-details");
+    treeDetails.innerHTML = `
+        <figure>
+            <img src="${tree.image}" alt="${tree.name}" class="w-full h-60" />
+        </figure>
+        <h2 class="card-title">${tree.name}</h2>
+        <p class="line-clamp-2">${tree.description}</p>
+        <div class="badge badge-outline badge-success">${tree.category}</div>
+        <div class="card-actions flex justify-between items-center">
+            <h2 class="font-bold text-2xl text-green-500">$${tree.price}</h2>
+        </div>
+    `;
+
+    document.getElementById("my_modal_5").showModal();
+
 }
 
 loadCategories();
