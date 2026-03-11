@@ -2,6 +2,9 @@ const categoriesContainer = document.getElementById('categories-container');
 const treesContainer = document.getElementById('trees-container');
 const spinner = document.getElementById('spinner');
 const allTreesBtn = document.getElementById('all-trees-btn');
+const cartContainer = document.getElementById("cart-container");
+const totalPrice = document.getElementById("total-price");
+let cart = [];
 
 const loadCategories = async () => {
     const url = "https://openapi.programming-hero.com/api/categories";
@@ -85,7 +88,7 @@ const displayTrees = (trees) => {
                 <div class="badge badge-outline badge-success">${item.category}</div>
                 <div class="card-actions flex justify-between items-center">
                     <h2 class="font-bold text-2xl text-green-500">$${item.price}</h2>
-                    <button class="btn bg-[#00C950] text-white font-bold btn-sm">Cart</button>
+                    <button onclick="addToCart(${item.id}, '${item.name}', ${item.price})" class="btn bg-[#00C950] text-white font-bold btn-sm">Cart</button>
                 </div>
             </div>
         `;
@@ -93,12 +96,52 @@ const displayTrees = (trees) => {
     })
 }
 
+const addToCart = (id, name, price) => {
+    const existingItem = cart.find(item => item.id === id);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } 
+    else {
+        cart.push({ id, name, price, quantity: 1 });
+    }
+    updateCart();
+}
+
+const updateCart = () => {
+    cartContainer.innerHTML = "";
+    let total = 0;
+    cart.forEach(item => {
+        total += (item.price * item.quantity);
+        const newDiv = document.createElement('div');
+        newDiv.innerHTML = `
+            <div class="bg-slate-200 p-2 rounded-lg">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <h3 class="font-bold text-lg">${item.name}</h3>
+                    <p>$${item.price} x ${item.quantity}</p>
+                  </div>
+                  <button onclick="removeCart(${item.id})" class="btn btn-ghost outline-none">X</button>
+                </div>
+                <h3 class="flex justify-end text-xl font-bold">$${item.price * item.quantity}</h3>
+             </div>
+             
+        `;
+        cartContainer.appendChild(newDiv);
+    });
+    totalPrice.innerText = total;
+}
+
+const removeCart = (id) => {
+    console.log(id);
+    cart = cart.filter(item => item.id != id);
+    updateCart();
+}
+
 const displayTreeDetails = async (id) => {
     const url = `https://openapi.programming-hero.com/api/plant/${id}`;
     const res = await fetch(url);
     const data = await res.json();
     const tree = data.plants;
-    console.log(tree);
 
     const treeDetails = document.getElementById("tree-details");
     treeDetails.innerHTML = `

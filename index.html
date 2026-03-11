@@ -18,6 +18,7 @@
     </h1>
     <main class="w-11/12 mx-auto">
       <div class="grid grid-cols-12 gap-5">
+        <!-- category section  -->
         <div
           class="col-span-3 card card-body h-fit bg-gray-100 rounded-lg sticky top-8"
         >
@@ -29,7 +30,8 @@
             <!-- categories button will be added here dynamically -->
           </div>
         </div>
-        <div class="col-span-6 card card-body h-fit bg-green-100 rounded-lg">
+        <!-- trees section  -->
+        <div class="col-span-6 card card-body h-fit bg-gray-100 rounded-lg">
           <!-- spinner  -->
           <div class="flex justify-center items-center hidden" id="spinner">
             <span class="loading loading-spinner loading-xl"></span>
@@ -38,13 +40,18 @@
             <!-- trees will be added here  -->
           </div>
         </div>
-        <div
-          class="col-span-3 card card-body min-h-60 h-fit bg-gray-100 rounded-lg"
-        >
+         <!-- cart section  -->
+        <div class="col-span-3 card card-body min-h-60 h-fit bg-gray-100 rounded-lg">
           <h1 class="text-3xl text-center font-bold">Cart</h1>
-          <div id="cart-container">
+          <div id="cart-container" class="space-y-2">
             <!-- cart items will be added here dynamically -->
+             
+             
           </div>
+          <div class="bg-green-100 flex justify-between items-center p-2 rounded-lg">
+                <h3 class="text-xl font-bold">Total:</h3>
+                <h3 id="total-price" class="font-bold text-xl">$23000</h3>
+             </div>
         </div>
       </div>
       <!-- Modal Section  -->
